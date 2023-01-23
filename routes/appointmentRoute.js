@@ -7,7 +7,10 @@ const {
     updateApplication,
     getDoctorApplications,
     getPatientApplications,
-    checkAvailability
+    checkAvailability,
+    checkSlots,
+    getApplicationPdfById,
+    getApplicationsByMID
 } =require("../controller/applicationController.js")
 
 
@@ -22,6 +25,9 @@ appoRouter.put("/:id",updateApplication);
 appoRouter.get("/doctor/:id",getDoctorApplications);
 appoRouter.get("/patient/:id",getPatientApplications);
 appoRouter.post("/check",checkAvailability);
+appoRouter.post("/checkslot",checkSlots);
+appoRouter.get("/appointment/:id",getApplicationPdfById)
+appoRouter.get("/medical/:id",getApplicationsByMID)
 
 
 

@@ -1,5 +1,5 @@
 const express =require('express');
-const{loginuser,createuser} = require('../controller/userController.js');
+const{loginuser,createuser, getUsers} = require('../controller/userController.js');
 
 // const {db} = require('../index.js');
 
@@ -20,7 +20,7 @@ authRoutes.post('/signup',createuser
 );
 
 
-
+authRoutes.get("/",getUsers)
 
    
 

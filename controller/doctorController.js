@@ -13,6 +13,7 @@ const getDoctors = (req, res) => {
     }
     );
 }
+var list =[]
 
 const createDoctor = (req, res) => {
     
@@ -76,7 +77,7 @@ const deleteDoctor=(req,res)=>{
 
 const modifyAvailablity=(req,res)=>{
     const {id,date,shift}= req.body;
-    db.query(`update doctor_available set doctor_available=0 where Did='${id}' and date='${date}' and shift='${shift}'`,(err,result)=>{
+    db.query(`insert into doctor_available (date,shift,doctor_available,doc_id) values('${date}', '${shift}', 0,'${id}')`,(err,result)=>{
         if(err){
             throw err;
         }
@@ -84,6 +85,33 @@ const modifyAvailablity=(req,res)=>{
     }
     );
 }
+
+
+const getBookingsById =(req,res)=>{
+
+        const {Did,shift}=req.body;
+
+      
+
+    db.query(`SELECT count(*) as num,date from  appointment where Did='${Did}' and shift='${shift}' group by date`,(err,result)=>{
+
+                res.send(result)
+
+
+    })
+   
+    
+
+
+}
+
+        
+
+
+
+
+
+
 
 
 const createSlots=(req,res)=>{
@@ -96,6 +124,18 @@ const createSlots=(req,res)=>{
     }
     );
 }
+
+const getSlots=(req,res)=>{
+    const {id}=req.params;
+    db.query(`select * from shift where Did='${id}'`,(err,result)=>{
+        if(err){
+            throw err;
+        }
+        res.status(200).json(result);
+    }
+    );
+}
+
 
 const updateFirstSlot=(req,res)=>{
     const {id,shift}= req.body;
@@ -134,6 +174,8 @@ module.exports = {
     modifyAvailablity,
     createSlots,
     updateFirstSlot,
-    updateSecondSlot
+    updateSecondSlot,
+    getSlots,
+    getBookingsById
     
 }

@@ -7,7 +7,8 @@ const {
     getNearbyMedicals,
     updateMedical,
     getMedicals,
-    medicalByName
+    medicalByName,
+    medicalAnalytics
 } =require("../controller/medicalController")
 
 
@@ -21,7 +22,7 @@ medicalRouter.get('/',getMedicals);
 medicalRouter.get('/:id',getMedicalById);
 medicalRouter.post('/',createMedical);
 medicalRouter.post("/nearby",getNearbyMedicals);
-
+medicalRouter.post("/analytics",medicalAnalytics)
 medicalRouter.get("name/:name",medicalByName);
 medicalRouter.put('/:id',updateMedical);
 

@@ -118,6 +118,40 @@ db.query(medicalQuery.updateMedical({id,name,address,pincode}),(err,result)=>{
 }
 
 
+const medicalAnalytics =(req,res)=>{
+
+const {id,year} =req.body
+        db.query(`select month(date) as monthId,monthname(date) as month , count(*) as num   from appointment inner join  patient on patient.idpatient = Pid inner join doctor  on doctor.id=Did where doctor.medicalid='${id}' and year(date)='${year}' group by month(date)  order by month(date) asc`,(err,result)=>{
+
+                if(err) 
+                {
+                    throw err
+                }
+
+
+var value =new Array(12)
+value.fill(0)
+result.forEach((item,idx)=>{
+
+
+    value[item.monthId-1]=item.num;
+
+
+})
+                res.send({
+                    result,
+                    data:value
+                })
+
+
+        })
+
+
+
+}
+
+
+
 
 
 const medicalByName = (req, res) => {
@@ -135,7 +169,7 @@ const medicalByName = (req, res) => {
 
 module.exports={
 
-
+    medicalAnalytics,
     createMedical,
     getMedicalById,
     getMedicals,

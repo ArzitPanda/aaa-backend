@@ -11,7 +11,9 @@ deleteDoctor,
 modifyAvailablity,
 createSlots,
 updateFirstSlot,
-updateSecondSlot
+updateSecondSlot,
+getSlots,
+getBookingsById
 
 } =require("../controller/doctorController.js")
 
@@ -27,9 +29,10 @@ doctorRouter.get('/hospital/:id', getDoctorByHospitalId);
 doctorRouter.post('/', createDoctor);
 doctorRouter.post('/availablity', modifyAvailablity);
 doctorRouter.post('/createSlot',createSlots);
+doctorRouter.get('/getSlot/:id',getSlots);
 doctorRouter.put('/createSlot/firstslot',updateFirstSlot);
 doctorRouter.put('/createSlot/secondslot',updateSecondSlot);
-
+doctorRouter.post("/getBookings",getBookingsById)
 
 doctorRouter.delete('/:id', deleteDoctor);
 module.exports = {doctorRouter};

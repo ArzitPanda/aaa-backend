@@ -1,6 +1,21 @@
 const {getConnection} = require('../middleware/dbconfig.js');
-
+const {connStr, azureUpload} =require('../middleware/Storageconfig.js')
 const db =getConnection();
+const getStream = require('into-stream')
+const {BlobServiceClient} = require('@azure/storage-blob')
+const multer = require('multer')
+var Readable = require('stream').Readable; 
+
+function bufferToStream(buffer) { 
+  var stream = new Readable();
+  stream.push(buffer);
+  stream.push(null);
+
+  return stream;
+}
+
+
+
 
 
 const loginuser = (req, res) => {
@@ -72,7 +87,20 @@ db.query(`select * from user where email='${email}'`, (err, result) => {
 
 }
 
-const createuser =  (req, res) => {    
+const blobServiceClient =new BlobServiceClient(connStr);
+const inMemoryStorage = multer.memoryStorage()
+const uploadStrategy = multer({ storage: inMemoryStorage }).single('image')
+
+const getBlobName = originalName => {
+    
+    const identifier = Math.random().toString().replace(/0\./, '');
+    return `${identifier}-${originalName}`;
+  };
+
+
+
+
+const createuser =   (req, res) => {    
     const {address,pincode,mobile,name,email, password} = req.body;
 
     db.query(`select * from user where email='${email}' or mobile='${mobile}'`, (err, result) => {
@@ -83,12 +111,27 @@ const createuser =  (req, res) => {
         {
             if(result.length===0)
             {
-                db.query(`insert into user (email,password,address,name,mobile,pincode) values ('${email}','${password}','${address}','${name}','${mobile}','${pincode}')`, (err, result) => {
-                    if(err){
-                        throw err;
-                    }
-                    res.status(200).json(result);
-                });
+
+                   
+                    uploadStrategy(req,res,async (err)=>{    
+
+                      
+                          const link= await azureUpload(req,res,"arzit")
+                           db.query(`insert into user (email,password,address,name,mobile,pincode,image) values ('${email}','${password}','${address}','${name}','${mobile}','${pincode}','${link}')`, (err, result) => {
+                            if(err){
+                                throw err;
+                            }
+                            res.status(200).json(result);
+                        });
+
+
+                    })
+
+
+   
+                      
+
+           
 
             }
             else
@@ -101,8 +144,21 @@ const createuser =  (req, res) => {
 }
 
 
+const getUsers = (req, res) =>{
 
+db.query("select * from user",(err,result)=>{
+
+        if(err)
+        throw err;
+
+        res.send(result);
+
+
+})
+
+
+}
     
 
 
-module.exports = {loginuser,createuser};
+module.exports = {loginuser,createuser,getUsers};
