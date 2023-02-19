@@ -46,7 +46,7 @@ const getNearbyMedicals =(req,res)=>{
 
         const val =Math.floor(pincode/1000)
 
-    db.query(medicalQuery.getNearbyMedicals(pincode),(err,result)=>{
+    db.query(medicalQuery.getNearbyMedicals(val),(err,result)=>{
 
                 if(err)
                     {

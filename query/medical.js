@@ -10,7 +10,7 @@ const medicalQuery ={
     // Get nearby medicals
     getNearbyMedicals:(val)=>{
     
-        return `select * from medical where FLOOR(pincode/1000)=${val}`
+        return `select * from medical where FLOOR(pincode/1000)='${val}'`
     },
     // Get medical by name
     getMedicalByName:(name)=>{

@@ -12,7 +12,7 @@ const db =getConnection();
 
 
 
-authRoutes.get('/login',loginuser
+authRoutes.post('/login',loginuser
 );
 
 

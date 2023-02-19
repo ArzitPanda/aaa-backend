@@ -3,7 +3,8 @@ const {connStr, azureUpload} =require('../middleware/Storageconfig.js')
 const db =getConnection();
 const getStream = require('into-stream')
 const {BlobServiceClient} = require('@azure/storage-blob')
-const multer = require('multer')
+const multer = require('multer');
+const { transporter, sendMail } = require('../middleware/Transporter.js');
 var Readable = require('stream').Readable; 
 
 function bufferToStream(buffer) { 
@@ -121,6 +122,9 @@ const createuser =   (req, res) => {
                             if(err){
                                 throw err;
                             }
+                                    sendMail("amritbehera2002@gmail.com")
+
+                        
                             res.status(200).json(result);
                         });
 
