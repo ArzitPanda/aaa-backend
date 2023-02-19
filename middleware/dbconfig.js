@@ -11,7 +11,7 @@ const getConnection = () => {
         password: 'momedical@2023',
         database: 'aaa',
         
-        ssl:{ca:fs.readFileSync(path.join(__dirname,"DigicertGlobalRootCA.crt.pem"))}
+        ssl:{ca:fs.readFileSync(path.resolve("middleware/DigicertGlobalRootCA.crt.pem"))}
         
     })
 
