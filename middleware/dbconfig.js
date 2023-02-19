@@ -1,6 +1,7 @@
 
 const mysql = require('mysql2');
 const fs = require('fs');
+const path = require('path');
 const getConnection = () => {
 
 
@@ -9,7 +10,8 @@ const getConnection = () => {
         user: 'arijit2001',
         password: 'momedical@2023',
         database: 'aaa',
-        ssl:{ca:fs.readFileSync(__dirname+"/DigicertGlobalRootCA.crt.pem")}
+        
+        ssl:{ca:fs.readFileSync(path.join(__dirname,"DigicertGlobalRootCA.crt.pem"))}
         
     })
 
